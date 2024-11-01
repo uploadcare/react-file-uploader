@@ -4,7 +4,7 @@ import "@uploadcare/file-uploader/web/uc-file-uploader-minimal.min.css";
 import { customElementToReactComponent } from "@uploadcare/react-adapter";
 import { AdapterConfig } from "../core/AdapterConfig";
 import { AdapterUploadCtxProvider } from "../core/AdapterUploadCtxProvider";
-import type { TProps } from "../types";
+import type { FileUploaderModes, TProps } from "../types";
 import { getCalcPropertyOfProps } from "../../utils/getCalcPropertyOfProps";
 import { getUserAgentIntegration } from "../../utils/getUserAgentIntegration";
 import {
@@ -20,7 +20,7 @@ const AdapterFileUploaderMinimal = customElementToReactComponent({
   elClass: UC.FileUploaderMinimal,
 });
 
-export const FileUploaderMinimal: FC<TProps> = ({
+export const FileUploaderMinimal: FC<TProps<FileUploaderModes.Minimal>> = ({
   ctxName,
   className,
   classNameUploader,
@@ -31,7 +31,7 @@ export const FileUploaderMinimal: FC<TProps> = ({
   const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generate(), [ctxName]);
 
   const { eventHandlers, config } = useMemo(
-    () => getCalcPropertyOfProps<TProps>(props),
+    () => getCalcPropertyOfProps<FileUploaderModes.Minimal>(props),
     [props],
   );
 
