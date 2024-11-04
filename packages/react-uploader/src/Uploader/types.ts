@@ -14,13 +14,8 @@ type TExtraPrefixOn<S extends string> = `on${Capitalize<S>}`;
 
 type TPrefixOnAndCamelCase<S extends string> = TExtraPrefixOn<TToCamelCase<S>>;
 
-export enum FileUploaderModes {
-  Regular = "Regular",
-  Minimal = "Minimal",
-  Inline = "Inline"
-}
 
-export type FileUploaderModesKeys = keyof typeof FileUploaderModes;
+export type FileUploaderModes = 'Regular' | 'Minimal' | 'Inline'
 
 type CommonProps = {
   /**
@@ -60,7 +55,7 @@ export type ConfigProps = Partial<Omit<ConfigType, "pubkey">> & {
   pubkey: ConfigType["pubkey"];
 };
 
-export type TProps<T extends FileUploaderModesKeys> = CommonProps &
+export type TProps<T extends FileUploaderModes> = CommonProps &
   ConfigProps &
   EventProps &
   UploadCtxPropviderProps &

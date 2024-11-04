@@ -4,7 +4,7 @@ import "@uploadcare/file-uploader/web/uc-file-uploader-regular.min.css";
 import { customElementToReactComponent } from "@uploadcare/react-adapter";
 import { AdapterConfig } from "../core/AdapterConfig";
 import { AdapterUploadCtxProvider } from "../core/AdapterUploadCtxProvider";
-import type { FileUploaderModes, TProps } from "../types";
+import type { TProps } from "../types";
 
 import { getCalcPropertyOfProps } from "../../utils/getCalcPropertyOfProps";
 import { getUserAgentIntegration } from "../../utils/getUserAgentIntegration";
@@ -21,7 +21,7 @@ const AdapterFileUploaderRegular = customElementToReactComponent({
   elClass: UC.FileUploaderRegular,
 });
 
-export const FileUploaderRegular: FC<TProps<FileUploaderModes.Regular>> = ({
+export const FileUploaderRegular: FC<TProps<"Regular">> = ({
   ctxName,
   className,
   classNameUploader,
@@ -32,7 +32,7 @@ export const FileUploaderRegular: FC<TProps<FileUploaderModes.Regular>> = ({
   const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generate(), [ctxName]);
 
   const { eventHandlers, config, uploader } = useMemo(
-    () => getCalcPropertyOfProps<FileUploaderModes.Regular>(props),
+    () => getCalcPropertyOfProps<"Regular">(props),
     [props],
   );
 

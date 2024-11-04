@@ -4,7 +4,7 @@ import "@uploadcare/file-uploader/web/uc-file-uploader-inline.min.css";
 import { customElementToReactComponent } from "@uploadcare/react-adapter";
 import { AdapterConfig } from "../core/AdapterConfig";
 import { AdapterUploadCtxProvider } from "../core/AdapterUploadCtxProvider";
-import type { FileUploaderModes, TProps } from "../types";
+import type { TProps } from "../types";
 import { getCalcPropertyOfProps } from "../../utils/getCalcPropertyOfProps";
 import { getUserAgentIntegration } from "../../utils/getUserAgentIntegration";
 import {
@@ -20,7 +20,7 @@ const AdapterFileUploaderInline = customElementToReactComponent({
   elClass: UC.FileUploaderMinimal,
 });
 
-export const FileUploaderInline: FC<TProps<FileUploaderModes.Inline>> = ({
+export const FileUploaderInline: FC<TProps<"Inline">> = ({
   ctxName,
   className,
   classNameUploader,
@@ -31,7 +31,7 @@ export const FileUploaderInline: FC<TProps<FileUploaderModes.Inline>> = ({
   const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generate(), [ctxName]);
 
   const { eventHandlers, config } = useMemo(
-    () => getCalcPropertyOfProps<FileUploaderModes.Inline>(props),
+    () => getCalcPropertyOfProps<"Inline">(props),
     [props],
   );
 
