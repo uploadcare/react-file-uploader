@@ -32,7 +32,12 @@ considerations.
 
 ## Quick start
 ### From NPM:
-1. Install the package: `npm install @uploadcare/react-uploader`
+1. Install the package: 
+
+```bash
+npm install @uploadcare/react-uploader
+```
+
 2. Connect React Uploader from your script file:
 ```jsx
 import { FileUploaderRegular } from "@uploadcare/react-uploader";
@@ -49,7 +54,7 @@ We provide a full set of props that are used in File Uploader. For review we sug
 
 For convenience, we provide the ability to access the File Uploader API using `apiRef`.
 You can see what methods are available in `apiRef` in the [documentation][uc-docs-file-uploader-api].
-It is important to note that you need to use `InstanceType` utility type to define `apiRef` type.
+It is important to note that we now pass all InstanceType from UploadCtxProvider.
 
 ```jsx
 import React, {useRef, useEffect} from "react";
@@ -60,9 +65,9 @@ import {
 import "@uploadcare/react-uploader/core.css";
 
 const Example = () => {
-    const uploaderRef = useRef <InstanceType<UploadCtxProvider> | null>(null);
+  const uploaderRef = useRef<InstanceType<UploadCtxProvider> | null>(null);
 
-    <FileUploaderRegular apiRef={uploaderRef} pubkey="YOUR_PUBLIC_KEY"/>;
+  <FileUploaderRegular apiRef={uploaderRef} pubkey="YOUR_PUBLIC_KEY"/>;
 }
 ```
 
@@ -78,22 +83,27 @@ import { FileUploaderRegular } from "@uploadcare/react-uploader";
 import "@uploadcare/react-uploader/core.css";
 
 <FileUploaderRegular
-    pubkey="YOUR_PUBLIC_KEY"
-    onModalOpen={() => {
-        console.log('modal-open')
-    }}
+  pubkey="YOUR_PUBLIC_KEY"
+  onModalOpen={() => {
+      console.log('modal-open')
+  }}
 />
 ```
 
-
 ## Styles
 You can customize the appearance of the React Uploader by using the `className` prop, which lets you apply custom CSS classes to the `FileUploader` wrapper, including the `Regular`, `Minimal`, and `Inline` variations.
+
+However, if you need to assign a class specifically to the uploader file. Use the `classNameUploader` prop.
 
 ```jsx
 import { FileUploaderRegular } from "@uploadcare/react-uploader";
 import "@uploadcare/react-uploader/core.css";
 
-<FileUploaderRegular className="fileUploaderWrapper" pubkey="YOUR_PUBLIC_KEY"/>;
+<FileUploaderRegular 
+  classNameUploader="uc-dark" 
+  className="fileUploaderWrapper" 
+  pubkey="YOUR_PUBLIC_KEY"
+/>;
 ```
 
 ```css
