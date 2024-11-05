@@ -21,7 +21,7 @@ const AdapterFileUploaderRegular = customElementToReactComponent({
   elClass: UC.FileUploaderRegular,
 });
 
-export const FileUploaderRegular: FC<TProps> = ({
+export const FileUploaderRegular: FC<TProps<"Regular">> = ({
   ctxName,
   className,
   classNameUploader,
@@ -31,8 +31,8 @@ export const FileUploaderRegular: FC<TProps> = ({
 }) => {
   const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generate(), [ctxName]);
 
-  const { eventHandlers, config } = useMemo(
-    () => getCalcPropertyOfProps<TProps>(props),
+  const { eventHandlers, config, uploader } = useMemo(
+    () => getCalcPropertyOfProps<"Regular">(props),
     [props],
   );
 
@@ -50,7 +50,7 @@ export const FileUploaderRegular: FC<TProps> = ({
           {...eventHandlers}
         />
         {/* @ts-ignore */}
-        <AdapterFileUploaderRegular class={classNameUploader} ctx-name={CTX_NAME} />
+        <AdapterFileUploaderRegular class={classNameUploader} ctx-name={CTX_NAME} {...uploader} />
       </div>
     </ConditionalSuspense>
   );

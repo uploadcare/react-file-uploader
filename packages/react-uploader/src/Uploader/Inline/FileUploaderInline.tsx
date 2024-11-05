@@ -20,7 +20,7 @@ const AdapterFileUploaderInline = customElementToReactComponent({
   elClass: UC.FileUploaderMinimal,
 });
 
-export const FileUploaderInline: FC<TProps> = ({
+export const FileUploaderInline: FC<TProps<"Inline">> = ({
   ctxName,
   className,
   classNameUploader,
@@ -31,7 +31,7 @@ export const FileUploaderInline: FC<TProps> = ({
   const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generate(), [ctxName]);
 
   const { eventHandlers, config } = useMemo(
-    () => getCalcPropertyOfProps<TProps>(props),
+    () => getCalcPropertyOfProps<"Inline">(props),
     [props],
   );
 

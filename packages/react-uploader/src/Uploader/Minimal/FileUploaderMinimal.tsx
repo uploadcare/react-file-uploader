@@ -20,7 +20,7 @@ const AdapterFileUploaderMinimal = customElementToReactComponent({
   elClass: UC.FileUploaderMinimal,
 });
 
-export const FileUploaderMinimal: FC<TProps> = ({
+export const FileUploaderMinimal: FC<TProps<"Minimal">> = ({
   ctxName,
   className,
   classNameUploader,
@@ -31,7 +31,7 @@ export const FileUploaderMinimal: FC<TProps> = ({
   const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generate(), [ctxName]);
 
   const { eventHandlers, config } = useMemo(
-    () => getCalcPropertyOfProps<TProps>(props),
+    () => getCalcPropertyOfProps<"Minimal">(props),
     [props],
   );
 
