@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.1.0...@uploadcare/react-uploader@1.2.0) (2024-11-05)
+
+### Features
+
+- bump file-uploader from 1.2.0 to 1.9.0 ([d0df7a2](https://github.com/uploadcare/react-components/commit/d0df7a241b59c1bb5e03bcac029d12549079a748))
+- updated type FileUploaderModes ([388386c](https://github.com/uploadcare/react-components/commit/388386c03d5677d50851a01d74ce98ed164d68f7))
+
 # [1.1.0](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.0.0...@uploadcare/react-uploader@1.1.0) (2024-09-27)
 
 ### Features
