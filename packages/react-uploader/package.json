@@ -33,7 +33,7 @@
     "next": "13 || 14"
   },
   "dependencies": {
-    "@uploadcare/file-uploader": "^1.9.0",
+    "@uploadcare/file-uploader": "^1.11.1",
     "@uploadcare/react-adapter": "^0.3.0"
   },
   "repository": {
