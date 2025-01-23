@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.3.0...@uploadcare/react-uploader@1.4.0) (2025-01-23)
+
+### Features
+
+- **nextjs:** added support for the latest version of next.js and react 19 ([357470b](https://github.com/uploadcare/react-components/commit/357470bb0df9f4b7890d1d9800c96d0193131b7a))
+
 # [1.3.0](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.2.0...@uploadcare/react-uploader@1.3.0) (2024-12-05)
 
 **Note:** Version bump only for package @uploadcare/react-uploader
