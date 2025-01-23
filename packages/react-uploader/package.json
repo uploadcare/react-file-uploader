@@ -29,8 +29,8 @@
     "test": "vitest"
   },
   "peerDependencies": {
-    "@types/react": "17 || 18",
-    "next": "13 || 14"
+    "@types/react": "17 || 18 || 19",
+    "next": "13 || 14 || 15"
   },
   "dependencies": {
     "@uploadcare/file-uploader": "^1.11.1",
