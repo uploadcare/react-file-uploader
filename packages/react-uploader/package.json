@@ -20,7 +20,7 @@
       "require": "./dist/nextjs.cjs",
       "types": "./dist/nextjs.d.ts"
     },
-    "./core.css": "./dist/style.css"
+    "./core.css": "./dist/react-uploader.css"
   },
   "scripts": {
     "dev": "tsc && vite build --watch",
@@ -29,8 +29,8 @@
     "test": "vitest"
   },
   "peerDependencies": {
-    "@types/react": "17 || 18 || 19",
-    "next": "13 || 14 || 15"
+    "@types/react": ">= 17.0.0",
+    "next": ">= 13.0.0"
   },
   "dependencies": {
     "@uploadcare/file-uploader": "^1.15.0",
