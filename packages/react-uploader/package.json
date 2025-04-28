@@ -29,11 +29,13 @@
     "test": "vitest"
   },
   "peerDependencies": {
-    "@types/react": ">= 17.0.0",
+    "@types/react": ">= 17.0.0"
+  },
+  "optionalDependencies": {
     "next": ">= 13.0.0"
   },
   "dependencies": {
-    "@uploadcare/file-uploader": "^1.15.0",
+    "@uploadcare/file-uploader": "^1.16.0",
     "@uploadcare/react-adapter": "^0.3.0"
   },
   "repository": {
