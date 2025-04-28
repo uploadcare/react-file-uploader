@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.7.0...@uploadcare/react-uploader@1.7.1) (2025-04-28)
+
+### Bug Fixes
+
+- **build:** updated path to export styles in package.json ([0fccce0](https://github.com/uploadcare/react-components/commit/0fccce07ae99aaa535d7cb1df9271620d3593e75))
+
 # [1.7.0](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.6.0...@uploadcare/react-uploader@1.7.0) (2025-04-25)
 
 **Note:** Version bump only for package @uploadcare/react-uploader
