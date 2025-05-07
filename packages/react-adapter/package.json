@@ -22,7 +22,7 @@
     "test": "vitest"
   },
   "peerDependencies": {
-    "@types/react": "17 || 18"
+    "@types/react": ">= 17.0.0"
   },
   "publishConfig": {
     "access": "public"

@@ -17,8 +17,7 @@
     },
     "./next": {
       "import": "./dist/nextjs.js",
-      "require": "./dist/nextjs.cjs",
-      "types": "./dist/nextjs.d.ts"
+      "require": "./dist/nextjs.cjs"
     },
     "./core.css": "./dist/react-uploader.css"
   },
