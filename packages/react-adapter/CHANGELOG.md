@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.1](https://github.com/uploadcare/react-file-uploader/compare/@uploadcare/react-adapter@0.3.0...@uploadcare/react-adapter@0.3.1) (2025-05-07)
+
+**Note:** Version bump only for package @uploadcare/react-adapter
+
 # 0.3.0 (2024-05-24)
 
 ### Bug Fixes
