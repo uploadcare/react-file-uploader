@@ -3,6 +3,6 @@ updates:
   - package-ecosystem: "npm"
     directory: "/packages/react-uploader"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     allow:
       - dependency-name: "@uploadcare/file-uploader"
