@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
 export type TProps = {
-  fallback?: React.ReactChild | React.ReactFragment | React.ReactPortal | null;
+  fallback?: React.ReactNode | React.ReactPortal | null;
   condition?: boolean;
   children: React.ReactNode;
 };
