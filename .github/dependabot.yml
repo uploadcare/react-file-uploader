@@ -1,17 +1,12 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/packages/react-uploader"
-    schedule:
-      interval: "daily"
-    allow:
-      - dependency-name: "@uploadcare/file-uploader"
-    versioning-strategy: increase
-
-  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
     allow:
       - dependency-name: "@uploadcare/file-uploader"
     versioning-strategy: increase
+    assignees:
+      - egordidenko
+      - nd0ut
