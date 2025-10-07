@@ -34,7 +34,7 @@
     "next": ">= 13.0.0"
   },
   "dependencies": {
-    "@uploadcare/file-uploader": "1.19.5",
+    "@uploadcare/file-uploader": "1.22.0",
     "@uploadcare/react-adapter": "^0.3.1"
   },
   "repository": {
