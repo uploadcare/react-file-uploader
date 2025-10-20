@@ -3,28 +3,45 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
-export default defineConfig({
-  build: {
-    cssCodeSplit: false,
-    lib: {
-      entry: {
-        nextjs: resolve(__dirname, "src/nextjs.ts"),
-        "react-uploader": resolve(__dirname, "src/libs.ts"),
+export default defineConfig(({ mode, command }) => {
+  if (command === "serve") {
+    return {
+      build: {
+        rollupOptions: {
+          input: resolve(__dirname, "src/demo/index.html"),
+        },
       },
+    };
+  }
 
-      name: "@uploadcare/react-uploader",
+  return {
+    build: {
+      cssCodeSplit: false,
+      lib: {
+        entry: {
+          nextjs: resolve(__dirname, "src/nextjs.ts"),
+          "react-uploader": resolve(__dirname, "src/libs.ts"),
+        },
 
-      formats: ["es", "cjs"],
-    },
-    rollupOptions: {
-      external: ["react", "next", "next/dynamic", "@uploadcare/file-uploader"],
-      output: {
-        globals: {
-          react: "React",
-          next: "next",
+        name: "@uploadcare/react-uploader",
+
+        formats: ["es", "cjs"],
+      },
+      rollupOptions: {
+        external: [
+          "react",
+          "next",
+          "next/dynamic",
+          "@uploadcare/file-uploader",
+        ],
+        output: {
+          globals: {
+            react: "React",
+            next: "next",
+          },
         },
       },
     },
-  },
-  plugins: [dts({ rollupTypes: true, insertTypesEntry: true })],
+    plugins: [dts({ rollupTypes: true, insertTypesEntry: true })],
+  };
 });
