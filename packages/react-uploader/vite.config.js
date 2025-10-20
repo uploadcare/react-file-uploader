@@ -1,9 +1,9 @@
 // vite.config.js
-import { resolve } from "path";
+import { resolve } from "node:path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
-export default defineConfig(({ mode, command }) => {
+export default defineConfig(({ command }) => {
   if (command === "serve") {
     return {
       build: {

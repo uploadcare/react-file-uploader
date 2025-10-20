@@ -1,18 +1,19 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.6.4/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "https://biomejs.dev/schemas/2.2.6/schema.json",
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true
     },
-    "ignore": ["./.nx", "node_modules/", "dist/"]
+    "includes": ["**", "!.nx", "!**/node_modules/**", "!**/dist/**"]
   },
   "formatter": {
     "indentStyle": "space",
     "enabled": true,
     "lineWidth": 80
+  },
+  "javascript": {
+    "jsxRuntime": "reactClassic"
   }
 }

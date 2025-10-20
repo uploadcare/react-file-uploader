@@ -38,7 +38,7 @@ export const registerPropAndEvent = <E extends Element>({
         if (!handlerExists) {
           handler = { handleEvent: valueProp as THandleEvent };
           events.set(event, handler);
-          // @ts-ignore
+          // @ts-expect-error
           node.addEventListener(event, (event: CustomEvent) =>
             handler.handleEvent(event.detail),
           );

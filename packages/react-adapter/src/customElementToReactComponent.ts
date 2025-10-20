@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 import { reservedReactProperties } from "./constants/reservedReactProperties";
 import { mapEvents } from "./utils/mapperEvents";
@@ -6,11 +6,11 @@ import { registerPropAndEvent } from "./utils/registerPropAndEvent";
 
 export type Options<
   I extends HTMLElement,
-  E extends Record<string, string> = {},
+  E extends Record<string, string> = Record<string, never>,
 > = {
   react: typeof React;
   tag: string;
-  elClass: { new(): I };
+  elClass: { new (): I };
   schemaEvents?: E;
 };
 
@@ -18,11 +18,11 @@ const segregateProps = <T, E, I>(props: T, eventProps: E, elClass: I) => {
   const reactProps: Record<string, unknown> = {};
   const customElProps: Record<string, unknown> = {};
 
-  // @ts-ignore
+  // @ts-expect-error
   Object.entries(props).forEach(([key, value]) => {
     if (reservedReactProperties.has(key)) {
       reactProps[key === "className" ? "class" : key] = value;
-      // @ts-ignore
+      // @ts-expect-error
     } else if (eventProps.has(key) || key in elClass.prototype) {
       customElProps[key] = value;
     } else {
@@ -35,7 +35,7 @@ const segregateProps = <T, E, I>(props: T, eventProps: E, elClass: I) => {
 
 export const customElementToReactComponent = <
   I extends HTMLElement,
-  E extends Record<string, string> = {},
+  E extends Record<string, string> = Record<string, never>,
 >({
   react: React, // https://react.dev/warnings/invalid-hook-call-warning
   tag,
@@ -54,7 +54,7 @@ export const customElementToReactComponent = <
         Record<string, unknown>,
         Set<string>,
         I
-      // @ts-ignore
+        // @ts-expect-error
       >(props, eventKeyOfProps, elClass);
 
       React.useLayoutEffect(() => {
@@ -89,7 +89,7 @@ export const customElementToReactComponent = <
       });
 
       // __tag is a private property from symbiotejs
-      // @ts-ignore
+      // @ts-expect-error
       return React.createElement(tag ?? elClass.__tag, {
         ...reactProps,
         ref: React.useCallback(

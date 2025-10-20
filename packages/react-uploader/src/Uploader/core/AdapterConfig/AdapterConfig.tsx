@@ -1,6 +1,6 @@
-import React from "react";
-import { customElementToReactComponent } from "@uploadcare/react-adapter";
 import * as UC from "@uploadcare/file-uploader";
+import { customElementToReactComponent } from "@uploadcare/react-adapter";
+import React from "react";
 
 export const AdapterConfig = customElementToReactComponent({
   react: React,
