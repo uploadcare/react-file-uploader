@@ -45,8 +45,8 @@ type FileUploaderMinimalProps = {};
 
 type FileUploaderInlineProps = {};
 
-type UploadCtxPropviderProps = {
-  apiRef?: Ref<InstanceType<UploadCtxProvider>>;
+type UploadCtxProviderProps = {
+  apiRef?: Ref<UploadCtxProvider>;
 };
 
 export type EventProps = Partial<TEventsSchema>;
@@ -58,7 +58,7 @@ export type ConfigProps = Partial<Omit<ConfigType, "pubkey">> & {
 export type TProps<T extends FileUploaderModes> = CommonProps &
   ConfigProps &
   EventProps &
-  UploadCtxPropviderProps &
+  UploadCtxProviderProps &
   Pick<TPropsConditionalSuspense, "fallback"> &
   (T extends "Regular"
     ? FileUploaderRegularProps

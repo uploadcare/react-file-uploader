@@ -54,7 +54,6 @@ We provide a full set of props that are used in File Uploader. For review we sug
 
 For convenience, we provide the ability to access the File Uploader API using `apiRef`.
 You can see what methods are available in `apiRef` in the [documentation][uc-docs-file-uploader-api].
-It is important to note that we now pass all InstanceType from UploadCtxProvider.
 
 ```jsx
 import React, {useRef, useEffect} from "react";
@@ -65,7 +64,7 @@ import {
 import "@uploadcare/react-uploader/core.css";
 
 const Example = () => {
-  const uploaderRef = useRef<InstanceType<UploadCtxProvider> | null>(null);
+  const uploaderRef = useRef<UploadCtxProvider | null>(null);
 
   <FileUploaderRegular apiRef={uploaderRef} pubkey="YOUR_PUBLIC_KEY"/>;
 }
