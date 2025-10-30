@@ -1,6 +1,6 @@
 import * as UC from "@uploadcare/file-uploader";
 import React, { type FC, useMemo } from "react";
-import "@uploadcare/file-uploader/web/uc-file-uploader-regular.min.css";
+import "@uploadcare/file-uploader/index.css";
 import { customElementToReactComponent } from "@uploadcare/react-adapter";
 import {
   ConditionalSuspense,
