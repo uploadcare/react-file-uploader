@@ -1,9 +1,10 @@
-export { FileUploaderRegular } from "./Uploader/Regular/FileUploaderRegular";
-export { FileUploaderMinimal } from "./Uploader/Minimal/FileUploaderMinimal";
-export { FileUploaderInline } from "./Uploader/Inline/FileUploaderInline";
-
-export { type TProps, UploadCtxProvider } from "./Uploader/types";
-export { type TEventsSchema } from "./Uploader/types";
-
+export type * from "@uploadcare/file-uploader";
 export { defineLocale } from "@uploadcare/file-uploader";
-export * from "@uploadcare/file-uploader/types/index.js";
+export { FileUploaderInline } from "./Uploader/Inline/FileUploaderInline";
+export { FileUploaderMinimal } from "./Uploader/Minimal/FileUploaderMinimal";
+export { FileUploaderRegular } from "./Uploader/Regular/FileUploaderRegular";
+export {
+  type TEventsSchema,
+  type TProps,
+  UploadCtxProvider,
+} from "./Uploader/types";

@@ -1,4 +1,5 @@
-import React, { FC } from "react";
+import type React from "react";
+import type { FC } from "react";
 
 export type TProps = {
   fallback?: React.ReactNode | React.ReactPortal | null;

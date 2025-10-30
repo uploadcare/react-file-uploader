@@ -1,7 +1,7 @@
 {
   "name": "@uploadcare/react-uploader",
   "description": "React component for file uploads using Uploadcare",
-  "version": "1.10.2",
+  "version": "1.11.0-alpha.0",
   "private": false,
   "type": "module",
   "files": [
@@ -22,6 +22,7 @@
     "./core.css": "./dist/react-uploader.css"
   },
   "scripts": {
+    "start": "vite",
     "dev": "tsc && vite build --watch",
     "build": "tsc && vite build",
     "preview": "vite preview",
@@ -31,10 +32,10 @@
     "@types/react": ">= 17.0.0"
   },
   "optionalDependencies": {
-    "next": ">= 13.0.0"
+    "next": "^16.0.0"
   },
   "dependencies": {
-    "@uploadcare/file-uploader": "1.23.0",
+    "@uploadcare/file-uploader": "1.24.1",
     "@uploadcare/react-adapter": "^0.3.1"
   },
   "repository": {
@@ -87,5 +88,11 @@
     "react file upload",
     "react hook file upload",
     "front-end"
-  ]
+  ],
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "react": "^19",
+    "react-dom": "^19"
+  }
 }

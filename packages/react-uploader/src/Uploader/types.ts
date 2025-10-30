@@ -1,9 +1,9 @@
-import type { Ref } from "react";
 import type {
   ConfigType,
-  UploadCtxProvider,
   EventMap,
+  UploadCtxProvider,
 } from "@uploadcare/file-uploader";
+import type { Ref } from "react";
 import type { TProps as TPropsConditionalSuspense } from "../SSR/ConditionalSuspense";
 
 type TToCamelCase<S extends string> = S extends `${infer Head}-${infer Tail}`
@@ -14,8 +14,7 @@ type TExtraPrefixOn<S extends string> = `on${Capitalize<S>}`;
 
 type TPrefixOnAndCamelCase<S extends string> = TExtraPrefixOn<TToCamelCase<S>>;
 
-
-export type FileUploaderModes = 'Regular' | 'Minimal' | 'Inline'
+export type FileUploaderModes = "Regular" | "Minimal" | "Inline";
 
 type CommonProps = {
   /**
@@ -41,12 +40,12 @@ type FileUploaderRegularProps = {
   headless?: boolean;
 };
 
-type FileUploaderMinimalProps = {};
+type FileUploaderMinimalProps = Record<string, unknown>;
 
-type FileUploaderInlineProps = {};
+type FileUploaderInlineProps = Record<string, unknown>;
 
-type UploadCtxPropviderProps = {
-  apiRef?: Ref<InstanceType<UploadCtxProvider>>;
+type UploadCtxProviderProps = {
+  apiRef?: Ref<UploadCtxProvider>;
 };
 
 export type EventProps = Partial<TEventsSchema>;
@@ -58,15 +57,15 @@ export type ConfigProps = Partial<Omit<ConfigType, "pubkey">> & {
 export type TProps<T extends FileUploaderModes> = CommonProps &
   ConfigProps &
   EventProps &
-  UploadCtxPropviderProps &
+  UploadCtxProviderProps &
   Pick<TPropsConditionalSuspense, "fallback"> &
   (T extends "Regular"
     ? FileUploaderRegularProps
     : T extends "Minimal"
-    ? FileUploaderMinimalProps
-    : T extends "Inline"
-    ? FileUploaderInlineProps
-    : never);
+      ? FileUploaderMinimalProps
+      : T extends "Inline"
+        ? FileUploaderInlineProps
+        : never);
 
 export { UploadCtxProvider } from "@uploadcare/file-uploader";
 
