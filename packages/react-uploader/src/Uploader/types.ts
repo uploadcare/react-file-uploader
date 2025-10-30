@@ -40,9 +40,9 @@ type FileUploaderRegularProps = {
   headless?: boolean;
 };
 
-type FileUploaderMinimalProps = Record<string, never>;
+type FileUploaderMinimalProps = Record<string, unknown>;
 
-type FileUploaderInlineProps = Record<string, never>;
+type FileUploaderInlineProps = Record<string, unknown>;
 
 type UploadCtxProviderProps = {
   apiRef?: Ref<UploadCtxProvider>;
