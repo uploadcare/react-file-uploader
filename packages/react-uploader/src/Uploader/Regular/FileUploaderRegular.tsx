@@ -28,7 +28,10 @@ export const FileUploaderRegular: FC<TProps<"Regular">> = ({
   fallback,
   ...props
 }) => {
-  const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generate(), [ctxName]);
+  const CTX_NAME = useMemo(
+    () => ctxName ?? UC.UID.generateRandomUUID(),
+    [ctxName],
+  );
 
   const { eventHandlers, config, uploader } =
     getCalcPropertyOfProps<"Regular">(props);
