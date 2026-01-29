@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.11.2...@uploadcare/react-uploader@1.12.0) (2026-01-29)
+
+### Bug Fixes
+
+- **UID:** сorrected the name of the function method ([c783e40](https://github.com/uploadcare/react-components/commit/c783e408ee5c582a9a1fe19cab413808ede75834))
+
 ## [1.11.2](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.11.1...@uploadcare/react-uploader@1.11.2) (2025-12-29)
 
 **Note:** Version bump only for package @uploadcare/react-uploader
