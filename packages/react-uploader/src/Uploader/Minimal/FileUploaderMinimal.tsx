@@ -28,7 +28,10 @@ export const FileUploaderMinimal: FC<TProps<"Minimal">> = ({
   fallback,
   ...props
 }) => {
-  const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generate(), [ctxName]);
+  const CTX_NAME = useMemo(
+    () => ctxName ?? UC.UID.generateRandomUUID(),
+    [ctxName],
+  );
 
   const { eventHandlers, config } = getCalcPropertyOfProps<"Minimal">(props);
 

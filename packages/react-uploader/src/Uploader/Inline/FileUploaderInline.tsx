@@ -28,7 +28,10 @@ export const FileUploaderInline: FC<TProps<"Inline">> = ({
   fallback,
   ...props
 }) => {
-  const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generate(), [ctxName]);
+  const CTX_NAME = useMemo(
+    () => ctxName ?? UC.UID.generateRandomUUID(),
+    [ctxName],
+  );
 
   const { eventHandlers, config } = getCalcPropertyOfProps<"Inline">(props);
 
