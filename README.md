@@ -11,7 +11,6 @@
   <a href="https://uploadcare.com/?ref=react-uploader">Website</a> •
   <a href="https://uploadcare.com/docs/file-uploader?ref=react-uploader">Docs</a> • 
   <a href="https://uploadcare.com/blog?ref=react-uploader">Blog</a> • 
-  <a href="https://discord.gg/mKWRgRsVz8?ref=react-uploader">Discord</a> •
   <a href="https://twitter.com/Uploadcare?ref=react-uploader">Twitter</a>
 </p>
 
