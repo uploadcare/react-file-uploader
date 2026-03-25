@@ -9,9 +9,8 @@
 </p>
 <p align="center">
   <a href="https://uploadcare.com/?ref=react-uploader">Website</a> •
-  <a href="https://uploadcare.com/docs/file-uploader?ref=react-uploader">Docs</a> • 
-  <a href="https://uploadcare.com/blog?ref=react-uploader">Blog</a> • 
-  <a href="https://discord.gg/mKWRgRsVz8?ref=react-uploader">Discord</a> •
+  <a href="https://uploadcare.com/docs/file-uploader?ref=react-uploader">Docs</a> •
+  <a href="https://uploadcare.com/blog?ref=react-uploader">Blog</a> •
   <a href="https://twitter.com/Uploadcare?ref=react-uploader">Twitter</a>
 </p>
 
@@ -32,7 +31,7 @@ considerations.
 
 ## Quick start
 ### From NPM:
-1. Install the package: 
+1. Install the package:
 
 ```bash
 npm install @uploadcare/react-uploader
@@ -98,9 +97,9 @@ However, if you need to assign a class specifically to the uploader file. Use th
 import { FileUploaderRegular } from "@uploadcare/react-uploader";
 import "@uploadcare/react-uploader/core.css";
 
-<FileUploaderRegular 
-  classNameUploader="uc-dark" 
-  className="fileUploaderWrapper" 
+<FileUploaderRegular
+  classNameUploader="uc-dark"
+  className="fileUploaderWrapper"
   pubkey="YOUR_PUBLIC_KEY"
 />;
 ```
@@ -111,7 +110,7 @@ import "@uploadcare/react-uploader/core.css";
 ```
 
 ## Next.js
-File Uploader does not support Server-side Rendering (SSR), we have a special import for nextjs that already has SSR disabled. 
+File Uploader does not support Server-side Rendering (SSR), we have a special import for nextjs that already has SSR disabled.
 You will need to import with import `@uploadcare/react-uploader/next`
 
 ```jsx
