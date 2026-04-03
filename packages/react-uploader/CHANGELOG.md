@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.13.0...@uploadcare/react-uploader@1.14.0) (2026-04-03)
+
+**Note:** Version bump only for package @uploadcare/react-uploader
+
 # [1.13.0](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.12.0...@uploadcare/react-uploader@1.13.0) (2026-03-02)
 
 **Note:** Version bump only for package @uploadcare/react-uploader
