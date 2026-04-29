@@ -22,18 +22,11 @@ export default defineConfig(({ command }) => {
           nextjs: resolve(__dirname, "src/nextjs.ts"),
           "react-uploader": resolve(__dirname, "src/libs.ts"),
         },
-
         name: "@uploadcare/react-uploader",
-
         formats: ["es", "cjs"],
       },
       rollupOptions: {
-        external: [
-          "react",
-          "next",
-          "next/dynamic",
-          "@uploadcare/file-uploader",
-        ],
+        external: ["react", "next", "next/dynamic", "@uploadcare/file-uploader"],
         output: {
           globals: {
             react: "React",
@@ -42,6 +35,6 @@ export default defineConfig(({ command }) => {
         },
       },
     },
-    plugins: [dts({ rollupTypes: true, insertTypesEntry: true })],
+    plugins: [dts({ rollupTypes: true, insertTypesEntry: true, tsconfigPath: resolve(__dirname, "tsconfig.json") })],
   };
 });

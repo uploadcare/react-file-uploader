@@ -46,7 +46,6 @@
     "react file upload",
     "react hook file upload",
     "front-end",
-    "react-adapter",
     "react-uploader",
     "file-uploader-regular",
     "file-uploader-inline",
@@ -55,7 +54,6 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "packages/react-adapter",
     "packages/react-uploader"
   ],
   "devDependencies": {
