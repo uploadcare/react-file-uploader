@@ -23,10 +23,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: "Use Node.js 20"
+      - name: "Use Node.js 22"
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: "Install dependencies"
         working-directory: ./
@@ -35,16 +35,58 @@ jobs:
       - name: "Run build"
         run: lerna run build
 
-      - name: "Version and publish 🚀"
+      - name: "Version"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          
+
           npx lerna version ${{ github.event.inputs.environment }} --conventional-commits --yes
-          
+
+      # npm staged publishing needs npm >=11.15.0. Pin it after install/build so npm ci
+      # keeps the dependency resolution the build was validated against.
+      - name: "Pin npm with staged publishing support"
+        run: npm install -g npm@">=11.15.0"
+
+      # Lerna has no native staged publishing, so replace `lerna publish from-git` with
+      # `npm stage publish` per package, staging only the ones Lerna tagged on HEAD this run.
+      - name: "Stage publish released packages"
+        id: stage
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-          npx lerna publish from-git --yes
+          released_tags="$(git tag --points-at HEAD)"
+          lines=""
+          count=0
+          for dir in $(node -p "require('./package.json').workspaces.join(' ')"); do
+            pkg="$dir/package.json"
+            [ "$(node -p "require('./$pkg').private === true")" = "true" ] && continue
+            name="$(node -p "require('./$pkg').name")"
+            version="$(node -p "require('./$pkg').version")"
+            if echo "$released_tags" | grep -qxF "${name}@${version}"; then
+              echo "Staging ${name}@${version}"
+              ( cd "$dir" && npm stage publish )
+              lines="${lines}• <https://www.npmjs.com/package/${name}?activeTab=staged|${name}@${version}>"$'\n'
+              count=$((count + 1))
+            else
+              echo "Skipping ${name}@${version} (not released in this run)"
+            fi
+          done
+          {
+            echo "count=${count}"
+            echo "message<<SLACK_EOF"
+            printf ':package: Staged for review (2FA required to approve each):\n%s' "$lines"
+            echo "SLACK_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: "Notify Slack about staged release"
+        if: steps.stage.outputs.count != '0'
+        uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0 # v1.27.0
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel-id: ${{ secrets.SLACK_NPM_RELEASE_CHANNEL }}
+          slack-message: ${{ steps.stage.outputs.message }}
