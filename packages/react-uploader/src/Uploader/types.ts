@@ -1,4 +1,5 @@
 import type {
+  Config,
   ConfigType,
   EventMap,
   UploadCtxProvider,
@@ -52,6 +53,7 @@ export type EventProps = Partial<TEventsSchema>;
 
 export type ConfigProps = Partial<Omit<ConfigType, "pubkey">> & {
   pubkey: ConfigType["pubkey"];
+  configRef?: Ref<Config>;
 };
 
 export type TProps<T extends FileUploaderModes> = CommonProps &

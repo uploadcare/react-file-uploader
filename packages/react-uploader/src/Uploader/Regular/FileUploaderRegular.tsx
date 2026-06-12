@@ -1,11 +1,8 @@
 import * as UC from "@uploadcare/file-uploader";
 import React, { type FC, useMemo } from "react";
 import "@uploadcare/file-uploader/index.css";
-import { customElementToReactComponent } from "@uploadcare/react-adapter";
-import {
-  ConditionalSuspense,
-  useIsBrowser,
-} from "../../SSR/ConditionalSuspense";
+import { createComponent } from "@lit/react";
+import { ConditionalSuspense, useIsBrowser } from "../../SSR/ConditionalSuspense";
 import { getCalcPropertyOfProps } from "../../utils/getCalcPropertyOfProps";
 import { getUserAgentIntegration } from "../../utils/getUserAgentIntegration";
 import { AdapterConfig } from "../core/AdapterConfig";
@@ -14,10 +11,10 @@ import type { TProps } from "../types";
 
 UC.defineComponents(UC);
 
-const AdapterFileUploaderRegular = customElementToReactComponent({
+const AdapterFileUploaderRegular = createComponent({
   react: React,
-  tag: "uc-file-uploader-regular",
-  elClass: UC.FileUploaderRegular,
+  tagName: "uc-file-uploader-regular",
+  elementClass: UC.FileUploaderRegular,
 });
 
 export const FileUploaderRegular: FC<TProps<"Regular">> = ({
@@ -25,16 +22,13 @@ export const FileUploaderRegular: FC<TProps<"Regular">> = ({
   className,
   classNameUploader,
   apiRef,
+  configRef,
   fallback,
   ...props
 }) => {
-  const CTX_NAME = useMemo(
-    () => ctxName ?? UC.UID.generateRandomUUID(),
-    [ctxName],
-  );
+  const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generateRandomUUID(), [ctxName]);
 
-  const { eventHandlers, config, uploader } =
-    getCalcPropertyOfProps<"Regular">(props);
+  const { eventHandlers, config, uploader } = getCalcPropertyOfProps<"Regular">(props);
 
   const isBrowser = useIsBrowser();
 
@@ -42,23 +36,13 @@ export const FileUploaderRegular: FC<TProps<"Regular">> = ({
     <ConditionalSuspense condition={isBrowser} fallback={fallback}>
       <div className={className}>
         <AdapterConfig
-          // @ts-expect-error
           userAgentIntegration={getUserAgentIntegration()}
           ctx-name={CTX_NAME}
+          ref={configRef}
           {...config}
         />
-        {/* @ts-ignore */}
-        <AdapterUploadCtxProvider
-          ref={apiRef}
-          ctx-name={CTX_NAME}
-          {...eventHandlers}
-        />
-        <AdapterFileUploaderRegular
-          // @ts-expect-error
-          class={classNameUploader}
-          ctx-name={CTX_NAME}
-          {...uploader}
-        />
+        <AdapterUploadCtxProvider ref={apiRef} ctx-name={CTX_NAME} {...eventHandlers} />
+        <AdapterFileUploaderRegular className={classNameUploader} ctx-name={CTX_NAME} {...uploader} />
       </div>
     </ConditionalSuspense>
   );

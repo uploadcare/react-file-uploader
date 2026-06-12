@@ -1,9 +1,9 @@
 import * as UC from "@uploadcare/file-uploader";
-import { customElementToReactComponent } from "@uploadcare/react-adapter";
+import { createComponent } from "@lit/react";
 import React from "react";
 
-export const AdapterConfig = customElementToReactComponent({
+export const AdapterConfig = createComponent({
   react: React,
-  tag: "uc-config",
-  elClass: UC.Config,
+  tagName: "uc-config",
+  elementClass: UC.Config,
 });
