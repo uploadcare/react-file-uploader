@@ -18,6 +18,11 @@ export const getCalcPropertyOfProps = <T extends FileUploaderModes>(
       continue;
     }
 
+    if (prop === "dynamicButton") {
+      uploader[prop] = value;
+      continue;
+    }
+
     config[prop] = value;
   }
 
