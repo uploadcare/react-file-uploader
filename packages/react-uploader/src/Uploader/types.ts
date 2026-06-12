@@ -38,6 +38,8 @@ type FileUploaderRegularProps = {
    * The prop controls the button's visibility in regular mode.
    */
   headless?: boolean;
+
+  dynamicButton?: boolean;
 };
 
 type FileUploaderMinimalProps = Record<string, unknown>;
