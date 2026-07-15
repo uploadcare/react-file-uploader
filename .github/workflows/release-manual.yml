@@ -46,9 +46,10 @@ jobs:
           npx lerna version ${{ github.event.inputs.environment }} --conventional-commits --yes
 
       # npm staged publishing needs npm >=11.15.0. Pin it after install/build so npm ci
+      # https://github.com/npm/cli/issues/9722
       # keeps the dependency resolution the build was validated against.
       - name: "Pin npm with staged publishing support"
-        run: npm install -g npm@">=11.15.0"
+        run: npm install -g npm@11
 
       # Lerna has no native staged publishing, so replace `lerna publish from-git` with
       # `npm stage publish` per package, staging only the ones Lerna tagged on HEAD this run.
