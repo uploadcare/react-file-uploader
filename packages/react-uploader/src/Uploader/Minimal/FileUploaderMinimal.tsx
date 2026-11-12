@@ -2,7 +2,10 @@ import * as UC from "@uploadcare/file-uploader";
 import React, { type FC, useMemo } from "react";
 import "@uploadcare/file-uploader/index.css";
 import { createComponent } from "@lit/react";
-import { ConditionalSuspense, useIsBrowser } from "../../SSR/ConditionalSuspense";
+import {
+  ConditionalSuspense,
+  useIsBrowser,
+} from "../../SSR/ConditionalSuspense";
 import { getCalcPropertyOfProps } from "../../utils/getCalcPropertyOfProps";
 import { getUserAgentIntegration } from "../../utils/getUserAgentIntegration";
 import { AdapterConfig } from "../core/AdapterConfig";
@@ -26,7 +29,10 @@ export const FileUploaderMinimal: FC<TProps<"Minimal">> = ({
   fallback,
   ...props
 }) => {
-  const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generateRandomUUID(), [ctxName]);
+  const CTX_NAME = useMemo(
+    () => ctxName ?? UC.UID.generateRandomUUID(),
+    [ctxName],
+  );
 
   const { eventHandlers, config } = getCalcPropertyOfProps<"Minimal">(props);
 
@@ -41,8 +47,15 @@ export const FileUploaderMinimal: FC<TProps<"Minimal">> = ({
           ref={configRef}
           {...config}
         />
-        <AdapterUploadCtxProvider ref={apiRef} ctx-name={CTX_NAME} {...eventHandlers} />
-        <AdapterFileUploaderMinimal className={classNameUploader} ctx-name={CTX_NAME} />
+        <AdapterUploadCtxProvider
+          ref={apiRef}
+          ctx-name={CTX_NAME}
+          {...eventHandlers}
+        />
+        <AdapterFileUploaderMinimal
+          className={classNameUploader}
+          ctx-name={CTX_NAME}
+        />
       </div>
     </ConditionalSuspense>
   );

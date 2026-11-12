@@ -2,7 +2,10 @@ import * as UC from "@uploadcare/file-uploader";
 import React, { type FC, useMemo } from "react";
 import "@uploadcare/file-uploader/index.css";
 import { createComponent } from "@lit/react";
-import { ConditionalSuspense, useIsBrowser } from "../../SSR/ConditionalSuspense";
+import {
+  ConditionalSuspense,
+  useIsBrowser,
+} from "../../SSR/ConditionalSuspense";
 import { getCalcPropertyOfProps } from "../../utils/getCalcPropertyOfProps";
 import { getUserAgentIntegration } from "../../utils/getUserAgentIntegration";
 import { AdapterConfig } from "../core/AdapterConfig";
@@ -26,9 +29,13 @@ export const FileUploaderRegular: FC<TProps<"Regular">> = ({
   fallback,
   ...props
 }) => {
-  const CTX_NAME = useMemo(() => ctxName ?? UC.UID.generateRandomUUID(), [ctxName]);
+  const CTX_NAME = useMemo(
+    () => ctxName ?? UC.UID.generateRandomUUID(),
+    [ctxName],
+  );
 
-  const { eventHandlers, config, uploader } = getCalcPropertyOfProps<"Regular">(props);
+  const { eventHandlers, config, uploader } =
+    getCalcPropertyOfProps<"Regular">(props);
 
   const isBrowser = useIsBrowser();
 
@@ -41,8 +48,16 @@ export const FileUploaderRegular: FC<TProps<"Regular">> = ({
           ref={configRef}
           {...config}
         />
-        <AdapterUploadCtxProvider ref={apiRef} ctx-name={CTX_NAME} {...eventHandlers} />
-        <AdapterFileUploaderRegular className={classNameUploader} ctx-name={CTX_NAME} {...uploader} />
+        <AdapterUploadCtxProvider
+          ref={apiRef}
+          ctx-name={CTX_NAME}
+          {...eventHandlers}
+        />
+        <AdapterFileUploaderRegular
+          className={classNameUploader}
+          ctx-name={CTX_NAME}
+          {...uploader}
+        />
       </div>
     </ConditionalSuspense>
   );

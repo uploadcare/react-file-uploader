@@ -17,7 +17,8 @@ function toOnEventName<S extends string>(input: S): ToOnEvent<S> {
       .join("")) as ToOnEvent<S>;
 }
 
-type EventValue = (typeof UC.UploadCtxProvider.EventType)[keyof typeof UC.UploadCtxProvider.EventType];
+type EventValue =
+  (typeof UC.UploadCtxProvider.EventType)[keyof typeof UC.UploadCtxProvider.EventType];
 
 export const AdapterUploadCtxProvider = createComponent({
   react: React,
