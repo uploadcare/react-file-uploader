@@ -1,7 +1,7 @@
 import * as UC from "@uploadcare/file-uploader";
 import React, { type FC, useMemo } from "react";
 import "@uploadcare/file-uploader/index.css";
-import { customElementToReactComponent } from "@uploadcare/react-adapter";
+import { createComponent } from "@lit/react";
 import {
   ConditionalSuspense,
   useIsBrowser,
@@ -14,10 +14,10 @@ import type { TProps } from "../types";
 
 UC.defineComponents(UC);
 
-const AdapterFileUploaderRegular = customElementToReactComponent({
+const AdapterFileUploaderRegular = createComponent({
   react: React,
-  tag: "uc-file-uploader-regular",
-  elClass: UC.FileUploaderRegular,
+  tagName: "uc-file-uploader-regular",
+  elementClass: UC.FileUploaderRegular,
 });
 
 export const FileUploaderRegular: FC<TProps<"Regular">> = ({
@@ -25,6 +25,7 @@ export const FileUploaderRegular: FC<TProps<"Regular">> = ({
   className,
   classNameUploader,
   apiRef,
+  configRef,
   fallback,
   ...props
 }) => {
@@ -42,20 +43,18 @@ export const FileUploaderRegular: FC<TProps<"Regular">> = ({
     <ConditionalSuspense condition={isBrowser} fallback={fallback}>
       <div className={className}>
         <AdapterConfig
-          // @ts-expect-error
           userAgentIntegration={getUserAgentIntegration()}
           ctx-name={CTX_NAME}
+          ref={configRef}
           {...config}
         />
-        {/* @ts-ignore */}
         <AdapterUploadCtxProvider
           ref={apiRef}
           ctx-name={CTX_NAME}
           {...eventHandlers}
         />
         <AdapterFileUploaderRegular
-          // @ts-expect-error
-          class={classNameUploader}
+          className={classNameUploader}
           ctx-name={CTX_NAME}
           {...uploader}
         />

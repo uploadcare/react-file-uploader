@@ -1,5 +1,7 @@
 import type {
+  Config,
   ConfigType,
+  CustomConfig,
   EventMap,
   UploadCtxProvider,
 } from "@uploadcare/file-uploader";
@@ -52,8 +54,10 @@ type UploadCtxProviderProps = {
 
 export type EventProps = Partial<TEventsSchema>;
 
-export type ConfigProps = Partial<Omit<ConfigType, "pubkey">> & {
+/** `CustomConfig` holds plugin keys, e.g. the AI Image Editor plugin's `aiEditor*`. */
+export type ConfigProps = Partial<Omit<ConfigType & CustomConfig, "pubkey">> & {
   pubkey: ConfigType["pubkey"];
+  configRef?: Ref<Config>;
 };
 
 export type TProps<T extends FileUploaderModes> = CommonProps &

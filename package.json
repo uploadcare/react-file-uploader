@@ -4,9 +4,10 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "build": "npm run build --workspaces",
-    "test": "npm run test --workspaces",
-    "prepare": "husky install"
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "prepare": "husky install",
+    "test:e2e": "playwright test -c e2e"
   },
   "description": "React File Uploader. React component with uploading from multiple sources",
   "keywords": [
@@ -46,7 +47,6 @@
     "react file upload",
     "react hook file upload",
     "front-end",
-    "react-adapter",
     "react-uploader",
     "file-uploader-regular",
     "file-uploader-inline",
@@ -55,20 +55,29 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "packages/react-adapter",
-    "packages/react-uploader"
+    "packages/react-uploader",
+    "e2e/react-18",
+    "e2e/react-19"
   ],
   "devDependencies": {
     "@biomejs/biome": "2.2.6",
-    "@vitest/browser": "^3.0.9",
+    "@mswjs/interceptors": "0.45.7",
+    "@playwright/test": "1.65.0",
     "husky": "^9.0.11",
     "lerna": "^9.0.3",
     "lint-staged": "^15.2.2",
+    "msw": "3.0.2",
     "prettier": "3.2.5",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "typescript": "^5.2.2",
     "vite": "^6.2.3",
     "vite-plugin-dts": "^4.5.0",
-    "vitest": "^3.0.9"
+    "vitest": "^4.1.11"
+  },
+  "overrides": {
+    "@vitest/mocker": {
+      "msw": "$msw"
+    }
   }
 }

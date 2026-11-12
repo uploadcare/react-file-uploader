@@ -26,7 +26,8 @@
     "dev": "tsc && vite build --watch",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "peerDependencies": {
     "@types/react": ">= 17.0.0"
@@ -35,8 +36,8 @@
     "next": "^16.0.0"
   },
   "dependencies": {
-    "@uploadcare/file-uploader": "1.36.0",
-    "@uploadcare/react-adapter": "^0.4.0"
+    "@lit/react": "^1.0.8",
+    "@uploadcare/file-uploader": "1.36.1"
   },
   "repository": {
     "type": "git",
@@ -92,6 +93,8 @@
   "devDependencies": {
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@uploadcare/api-emulator": "^6.25.1",
+    "@vitest/browser-playwright": "^4.1.11",
     "react": "^19",
     "react-dom": "^19"
   }

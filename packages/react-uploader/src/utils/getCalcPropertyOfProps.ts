@@ -9,7 +9,11 @@ export const getCalcPropertyOfProps = <T extends FileUploaderModes>(
 
   for (const [prop, value] of Object.entries(props)) {
     if (prop.startsWith("on")) {
-      eventHandlers[prop] = value;
+      // @lit/react hands listeners the Event; our handlers take its detail.
+      eventHandlers[prop] =
+        typeof value === "function"
+          ? (event: CustomEvent) => value(event.detail)
+          : value;
       continue;
     }
 
