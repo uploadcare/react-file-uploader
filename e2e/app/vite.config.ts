@@ -5,7 +5,9 @@ import { defineConfig } from "vite";
 export default defineConfig({
   esbuild: { jsx: "automatic" },
   // The app source lives in e2e/app and the uploader is a workspace symlink:
-  // resolve these from the app's own node_modules so it gets its own React.
+  // resolve these from the app's own node_modules so it gets its own React, and
+  // one @uploadcare/file-uploader (the app pins react-uploader's version) for
+  // both the uploader and the AI Image Editor plugin.
   resolve: {
     dedupe: ["react", "react-dom", "@uploadcare/file-uploader"],
   },

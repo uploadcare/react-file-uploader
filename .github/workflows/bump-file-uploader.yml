@@ -81,7 +81,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
-          npm install "$PACKAGE@$TO" -w "$WORKSPACE" --save-exact --no-audit --no-fund
+          # react-uploader and the e2e apps pin the same version (e2e/playwright.config.ts checks it).
+          # `npm pkg set` + `npm install`, not `npm install <spec> -w`, which also writes the root package.json.
+          for workspace in "$WORKSPACE" e2e-react-18 e2e-react-19; do
+            npm pkg set "dependencies.$PACKAGE=$TO" -w "$workspace"
+          done
+          npm install --no-audit --no-fund
           git commit -am "$title"
           # Rebuilt from main on every run, so a rerun picks up main's latest
           git push --force origin "$branch"
