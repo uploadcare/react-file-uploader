@@ -1,0 +1,161 @@
+name: "Bump File Uploader"
+
+# Daily: when npm has a newer @uploadcare/file-uploader, open a PR that bumps
+# it, run Checks on that PR, and if they pass, merge it and start "Release and
+# Publish Manual" with the same bump size (a minor uploader bump releases a
+# minor @uploadcare/react-uploader). If they fail, the PR stays open and Slack
+# is told.
+#
+# Everything runs with GITHUB_TOKEN, whose events don't trigger other
+# workflows (except workflow_dispatch). So Checks is called here as a
+# reusable workflow, its result is posted on the PR as a commit status, and
+# the release is started with workflow_dispatch.
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: bump-file-uploader
+
+permissions:
+  contents: write
+  pull-requests: write
+  statuses: write
+  actions: write
+
+env:
+  PACKAGE: "@uploadcare/file-uploader"
+  WORKSPACE: "@uploadcare/react-uploader"
+
+jobs:
+  pr:
+    name: "Open bump PR"
+    runs-on: ubuntu-latest
+    outputs:
+      from: ${{ steps.detect.outputs.from }}
+      to: ${{ steps.detect.outputs.to }}
+      bump: ${{ steps.detect.outputs.bump }}
+      sha: ${{ steps.pr.outputs.sha }}
+      number: ${{ steps.pr.outputs.number }}
+      url: ${{ steps.pr.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: "Detect a newer version"
+        id: detect
+        run: |
+          from=$(node -p "require('./packages/react-uploader/package.json').dependencies['$PACKAGE']")
+          to=$(npm view "$PACKAGE" version)
+          semver='^[0-9]+\.[0-9]+\.[0-9]+$'
+          if ! [[ "$from" =~ $semver && "$to" =~ $semver ]]; then
+            echo "::error::Expected exact versions, got '$from' pinned and '$to' on npm"
+            exit 1
+          fi
+          # major | minor | patch, or "none" when npm's latest isn't newer
+          bump=$(node -e '
+            const [a, b] = process.argv.slice(1).map((v) => v.split(".").map(Number));
+            const i = a.findIndex((n, k) => n !== b[k]);
+            console.log(i === -1 || b[i] < a[i] ? "none" : ["major", "minor", "patch"][i]);
+          ' "$from" "$to")
+          echo "$PACKAGE: pinned $from, latest $to, bump: $bump"
+          if [ "$bump" != "none" ]; then
+            { echo "from=$from"; echo "to=$to"; echo "bump=$bump"; } >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: "Push the bump branch and open its PR"
+        id: pr
+        if: steps.detect.outputs.to
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FROM: ${{ steps.detect.outputs.from }}
+          TO: ${{ steps.detect.outputs.to }}
+        run: |
+          branch="deps/file-uploader-$TO"
+          title="fix(deps): bump $PACKAGE from $FROM to $TO"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          npm install "$PACKAGE@$TO" -w "$WORKSPACE" --save-exact --no-audit --no-fund
+          git commit -am "$title"
+          # Rebuilt from main on every run, so a rerun picks up main's latest
+          git push --force origin "$branch"
+
+          number=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$number" ]; then
+            gh pr create --base main --head "$branch" --title "$title" --body "$(cat <<EOF
+          Automatic bump of \`$PACKAGE\` from $FROM to $TO, opened by the [Bump File Uploader]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID) workflow.
+
+          If Checks pass, this PR is merged and \`$WORKSPACE\` is released with the same bump size; the release is staged on npm for review. If they fail, it stays open for a person to look at.
+          EOF
+          )"
+            number=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')
+          fi
+
+          # A newer version supersedes any older bump PR
+          gh pr list --state open --json number,headRefName \
+            --jq ".[] | select((.headRefName | startswith(\"deps/file-uploader-\")) and .headRefName != \"$branch\") | .number" |
+            while read -r old; do
+              gh pr close "$old" --delete-branch --comment "Superseded by #$number ($PACKAGE $TO)."
+            done
+
+          {
+            echo "sha=$(git rev-parse HEAD)"
+            echo "number=$number"
+            echo "url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/pull/$number"
+          } >> "$GITHUB_OUTPUT"
+
+  checks:
+    name: "Checks"
+    needs: pr
+    if: needs.pr.outputs.to
+    uses: ./.github/workflows/checks.yml
+    with:
+      ref: ${{ needs.pr.outputs.sha }}
+
+  release:
+    name: "Merge and release, or report"
+    needs: [pr, checks]
+    if: always() && needs.pr.outputs.to && needs.checks.result != 'cancelled'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      FROM: ${{ needs.pr.outputs.from }}
+      TO: ${{ needs.pr.outputs.to }}
+      BUMP: ${{ needs.pr.outputs.bump }}
+      SHA: ${{ needs.pr.outputs.sha }}
+      NUMBER: ${{ needs.pr.outputs.number }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: "Post the Checks result on the PR"
+        env:
+          STATE: ${{ needs.checks.result == 'success' && 'success' || 'failure' }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/statuses/$SHA" \
+            -f state="$STATE" -f context="Checks (Bump File Uploader)" \
+            -f target_url="$RUN_URL" -f description="build, unit and e2e tests: $STATE"
+
+      - name: "Merge the PR and start the release"
+        if: needs.checks.result == 'success'
+        run: |
+          # --match-head-commit: merge only what Checks ran on
+          gh pr merge "$NUMBER" --repo "$GITHUB_REPOSITORY" --squash --delete-branch --match-head-commit "$SHA"
+          gh workflow run release-manual.yml --repo "$GITHUB_REPOSITORY" --ref main \
+            -f environment="$BUMP" \
+            -f reason="$PACKAGE bumped $FROM → $TO (#$NUMBER)"
+
+      - name: "Tell Slack the bump failed"
+        if: needs.checks.result == 'failure'
+        uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0 # v1.27.0
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel-id: ${{ secrets.SLACK_NPM_RELEASE_CHANNEL }}
+          slack-message: |
+            :robot_face: Automatic bump of ${{ env.PACKAGE }} from ${{ needs.pr.outputs.from }} to ${{ needs.pr.outputs.to }} failed Checks, so ${{ env.WORKSPACE }} wasn't released.
+            Please take a look: <${{ needs.pr.outputs.url }}|PR #${{ needs.pr.outputs.number }}> (<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run>)

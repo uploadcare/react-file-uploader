@@ -12,6 +12,11 @@ on:
           - patch
           - minor
           - major
+      reason:
+        description: 'Why this release was started (set by automation; leave empty for a manual release)'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   build:
@@ -57,6 +62,7 @@ jobs:
         id: stage
         env:
           NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          REASON: ${{ github.event.inputs.reason }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
           released_tags="$(git tag --points-at HEAD)"
@@ -79,6 +85,9 @@ jobs:
           {
             echo "count=${count}"
             echo "message<<SLACK_EOF"
+            if [ -n "$REASON" ]; then
+              printf ':robot_face: Automatic release: %s\n' "$REASON"
+            fi
             printf ':package: Staged for review (2FA required to approve each):\n%s' "$lines"
             echo "SLACK_EOF"
           } >> "$GITHUB_OUTPUT"

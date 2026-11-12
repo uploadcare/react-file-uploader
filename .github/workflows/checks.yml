@@ -5,12 +5,22 @@ on:
   push:
     branches:
       - main
+  # Called by bump-file-uploader.yml on the bump branch: its PR is opened with
+  # GITHUB_TOKEN, which doesn't trigger pull_request runs.
+  workflow_call:
+    inputs:
+      ref:
+        description: "Git ref to check out"
+        type: string
+        default: ""
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
@@ -24,6 +34,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
