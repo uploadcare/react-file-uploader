@@ -4,9 +4,10 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "build": "npm run build --workspaces",
-    "test": "npm run test --workspaces",
-    "prepare": "husky install"
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "prepare": "husky install",
+    "test:e2e": "playwright test -c e2e"
   },
   "description": "React File Uploader. React component with uploading from multiple sources",
   "keywords": [
@@ -54,11 +55,14 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "packages/react-uploader"
+    "packages/react-uploader",
+    "e2e/react-18",
+    "e2e/react-19"
   ],
   "devDependencies": {
     "@biomejs/biome": "2.2.6",
     "@mswjs/interceptors": "0.45.7",
+    "@playwright/test": "1.65.0",
     "husky": "^9.0.11",
     "lerna": "^9.0.3",
     "lint-staged": "^15.2.2",

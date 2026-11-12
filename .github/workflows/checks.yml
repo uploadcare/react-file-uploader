@@ -33,3 +33,7 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Run tests (React 18 and 19)
         run: npm test
+      - name: Build
+        run: npm run build
+      - name: Run e2e apps (React 18 and 19)
+        run: npm run test:e2e

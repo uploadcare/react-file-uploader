@@ -5,8 +5,12 @@
     "version": {
       "createRelease": "github",
       "conventionalCommits": true,
-      "allowBranch": ["main", "release"],
-      "message": "chore(release): publish"
+      "allowBranch": [
+        "main",
+        "release"
+      ],
+      "message": "chore(release): publish",
+      "private": false
     }
   }
 }

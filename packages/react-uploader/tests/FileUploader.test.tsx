@@ -1,10 +1,8 @@
-import { AiImageEditorPlugin } from "@uploadcare/ai-image-editor/plugin";
 import type { Config, UploadCtxProvider } from "@uploadcare/file-uploader";
 import React, { createRef } from "react";
 import { flushSync } from "react-dom";
 import { createRoot, type Root } from "react-dom/client";
-import { afterEach, beforeAll, describe, expect, inject, it, vi } from "vitest";
-import { page } from "vitest/browser";
+import { afterEach, describe, expect, inject, it, vi } from "vitest";
 import {
   FileUploaderInline,
   FileUploaderMinimal,
@@ -22,11 +20,6 @@ function render(element: React.ReactElement) {
   root = createRoot(container);
   flushSync(() => root?.render(element));
 }
-
-beforeAll(async () => {
-  // Registers <uc-ai-image-editor>, which the plugin opens.
-  await import("@uploadcare/ai-image-editor");
-});
 
 afterEach(() => {
   root?.unmount();
@@ -95,46 +88,5 @@ describe.each([
     expect(file.uuid).toEqual(expect.any(String));
     expect(onChange.mock.lastCall?.[0]).not.toBeInstanceOf(Event);
     expect(onChange.mock.lastCall?.[0].status).toBe("success");
-  });
-});
-
-describe("AI Image Editor plugin", () => {
-  function renderWithPlugin() {
-    const apiRef = createRef<UploadCtxProvider>();
-    render(
-      <FileUploaderRegular
-        pubkey="demopublickey"
-        sourceList="local, url, ai-image-editor"
-        plugins={[AiImageEditorPlugin]}
-        apiRef={apiRef}
-      />,
-    );
-    return apiRef;
-  }
-
-  it("opens the editor from the Generate image source", async () => {
-    renderWithPlugin();
-    await page.getByText("Upload files", { exact: true }).click();
-    await page.getByText("Generate image").first().click();
-    await expect
-      .element(
-        page.getByRole("region", { name: "Generate image", exact: true }),
-      )
-      .toBeVisible();
-  });
-
-  it("opens the editor from AI Edit on an uploaded image", async () => {
-    const apiRef = renderWithPlugin();
-    await vi.waitFor(() => expect(apiRef.current?.api).toBeTruthy());
-    apiRef.current?.api.addFileFromUrl(IMAGE_URL);
-    apiRef.current?.api.initFlow();
-
-    await page
-      .getByRole("button", { name: /AI Edit/i })
-      .first()
-      .click();
-    await expect
-      .element(page.getByRole("region", { name: "Edit image", exact: true }))
-      .toBeVisible();
   });
 });

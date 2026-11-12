@@ -5,3 +5,6 @@ docs
 
 .nx/cache
 .vitest-attachments
+__screenshots__
+test-results
+playwright-report
