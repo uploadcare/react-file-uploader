@@ -69,6 +69,23 @@ const Example = () => {
 }
 ```
 
+## Config element
+
+`configRef` gives you the underlying `<uc-config>` element, the same way `apiRef` gives you the upload context.
+Use it to read the current config or to set an option on the element directly.
+
+```jsx
+import React, {useRef} from "react";
+import {FileUploaderRegular, type Config} from "@uploadcare/react-uploader";
+import "@uploadcare/react-uploader/core.css";
+
+const Example = () => {
+  const configRef = useRef<Config | null>(null);
+
+  return <FileUploaderRegular configRef={configRef} pubkey="YOUR_PUBLIC_KEY"/>;
+}
+```
+
 ## Events
 Events in React Uploader are the same as in File Uploader, see the [documentation][uc-docs-events].
 The principle of converting events from blocks to React Uploader:

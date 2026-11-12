@@ -26,7 +26,7 @@ This documentation provides guidance on how to use the Uploadcare React Uploader
 about its features, installation process, usage examples, customization options, event handling, and security
 considerations.
 
-`@uploadcare/react-uploader` provides React components for file uploads powered by Uploadcare: `FileUploaderRegular`, `FileUploaderMinimal`, and `FileUploaderInline`. It wraps `@uploadcare/file-uploader` Web Components with full React prop typing, camelCase event handlers (`onModalOpen`, etc.), `apiRef` access to the underlying File Uploader API, and customizable styles via `className` and `classNameUploader` props. For Next.js, import from `@uploadcare/react-uploader/next` to disable SSR automatically.
+`@uploadcare/react-uploader` provides React components for file uploads powered by Uploadcare: `FileUploaderRegular`, `FileUploaderMinimal`, and `FileUploaderInline`. It wraps `@uploadcare/file-uploader` Web Components with full React prop typing, camelCase event handlers (`onModalOpen`, etc.), `apiRef` access to the underlying File Uploader API, `configRef` access to the `<uc-config>` element, and customizable styles via `className` and `classNameUploader` props. For Next.js, import from `@uploadcare/react-uploader/next` to disable SSR automatically.
 
 <img alt="Uploadcare File Uploader examples" src="https://ucarecdn.com/916a1054-ca44-4c4a-9f7b-99fa499043d9/-/preview/">
 
@@ -68,6 +68,23 @@ const Example = () => {
   const uploaderRef = useRef<UploadCtxProvider | null>(null);
 
   <FileUploaderRegular apiRef={uploaderRef} pubkey="YOUR_PUBLIC_KEY"/>;
+}
+```
+
+## Config element
+
+`configRef` gives you the underlying `<uc-config>` element, the same way `apiRef` gives you the upload context.
+Use it to read the current config or to set an option on the element directly.
+
+```jsx
+import React, {useRef} from "react";
+import {FileUploaderRegular, type Config} from "@uploadcare/react-uploader";
+import "@uploadcare/react-uploader/core.css";
+
+const Example = () => {
+  const configRef = useRef<Config | null>(null);
+
+  return <FileUploaderRegular configRef={configRef} pubkey="YOUR_PUBLIC_KEY"/>;
 }
 ```
 
