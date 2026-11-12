@@ -4,3 +4,4 @@ dist
 docs
 
 .nx/cache
+.vitest-attachments
