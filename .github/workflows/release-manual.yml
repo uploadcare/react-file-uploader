@@ -12,6 +12,17 @@ on:
           - patch
           - minor
           - major
+      reason:
+        description: 'Why this release was started (set by automation; leave empty for a manual release)'
+        required: false
+        default: ''
+        type: string
+
+# One release at a time: an automatic and a manual release would otherwise
+# version the same commit and race to push their commits and tags.
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -19,12 +30,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
+          # The branch's latest commit, not the one this run was queued on
+          ref: ${{ github.ref }}
 
       - name: "Use Node.js 24"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '24'
 
@@ -33,17 +46,18 @@ jobs:
         run: npm ci
 
       - name: "Run build"
-        run: lerna run build
+        run: npx lerna run build
 
       - name: "Version"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUMP: ${{ github.event.inputs.environment }}
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-          npx lerna version ${{ github.event.inputs.environment }} --conventional-commits --yes
+          npx lerna version "$BUMP" --conventional-commits --yes
 
       # npm staged publishing needs npm >=11.15.0. Pin it after install/build so npm ci
       # https://github.com/npm/cli/issues/9722
@@ -57,8 +71,9 @@ jobs:
         id: stage
         env:
           NPM_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          REASON: ${{ github.event.inputs.reason }}
         run: |
-          npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          npm config set //registry.npmjs.org/:_authToken="$NPM_TOKEN"
           released_tags="$(git tag --points-at HEAD)"
           lines=""
           count=0
@@ -79,6 +94,9 @@ jobs:
           {
             echo "count=${count}"
             echo "message<<SLACK_EOF"
+            if [ -n "$REASON" ]; then
+              printf ':robot_face: Automatic release: %s\n' "$REASON"
+            fi
             printf ':package: Staged for review (2FA required to approve each):\n%s' "$lines"
             echo "SLACK_EOF"
           } >> "$GITHUB_OUTPUT"
@@ -91,3 +109,14 @@ jobs:
         with:
           channel-id: ${{ secrets.SLACK_NPM_RELEASE_CHANNEL }}
           slack-message: ${{ steps.stage.outputs.message }}
+
+      - name: "Notify Slack about a failed release"
+        if: failure()
+        uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0 # v1.27.0
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel-id: ${{ secrets.SLACK_NPM_RELEASE_CHANNEL }}
+          slack-message: |
+            :x: Release and Publish Manual (${{ github.event.inputs.environment }}) failed${{ github.event.inputs.reason && format(' — automatic release: {0}', github.event.inputs.reason) || '' }}.
+            Nothing may have been staged; check whether a version was tagged before rerunning: <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run>
