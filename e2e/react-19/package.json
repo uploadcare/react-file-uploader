@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@uploadcare/ai-image-editor": "^0.2.10",
-    "@uploadcare/file-uploader": "1.36.1",
+    "@uploadcare/file-uploader": "1.35.1",
     "@uploadcare/react-uploader": "*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
