@@ -41,7 +41,10 @@ jobs:
       number: ${{ steps.pr.outputs.number }}
       url: ${{ steps.pr.outputs.url }}
     steps:
+      # Always main's latest, also for a run dispatched from another branch or rerun later
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - uses: actions/setup-node@v4
         with:
@@ -145,14 +148,29 @@ jobs:
             -f state="$STATE" -f context="Checks (Bump File Uploader)" \
             -f target_url="$RUN_URL" -f description="build, unit and e2e tests: $STATE"
 
-      - name: "Merge the PR and start the release"
+      - name: "Merge the PR"
+        if: needs.checks.result == 'success'
+        # --match-head-commit: merge only what Checks ran on
+        run: gh pr merge "$NUMBER" --repo "$GITHUB_REPOSITORY" --squash --delete-branch --match-head-commit "$SHA"
+
+      - name: "Start the release"
         if: needs.checks.result == 'success'
         run: |
-          # --match-head-commit: merge only what Checks ran on
-          gh pr merge "$NUMBER" --repo "$GITHUB_REPOSITORY" --squash --delete-branch --match-head-commit "$SHA"
           gh workflow run release-manual.yml --repo "$GITHUB_REPOSITORY" --ref main \
             -f environment="$BUMP" \
             -f reason="$PACKAGE bumped $FROM → $TO (#$NUMBER)"
+
+      # Once the bump is merged, later runs see nothing to bump and won't retry the release
+      - name: "Tell Slack the merge or release start failed"
+        if: failure() && needs.checks.result == 'success'
+        uses: slackapi/slack-github-action@37ebaef184d7626c5f204ab8d3baff4262dd30f0 # v1.27.0
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel-id: ${{ secrets.SLACK_NPM_RELEASE_CHANNEL }}
+          slack-message: |
+            :x: Automatic bump of ${{ env.PACKAGE }} from ${{ needs.pr.outputs.from }} to ${{ needs.pr.outputs.to }} passed Checks, but merging <${{ needs.pr.outputs.url }}|PR #${{ needs.pr.outputs.number }}> or starting the release failed (<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run>).
+            Merge the PR if it's still open, then run Release and Publish Manual with *${{ needs.pr.outputs.bump }}*.
 
       - name: "Tell Slack the bump failed"
         if: needs.checks.result == 'failure'
