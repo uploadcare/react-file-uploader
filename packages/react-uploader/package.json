@@ -33,7 +33,7 @@
     "@types/react": ">= 17.0.0"
   },
   "optionalDependencies": {
-    "next": "^16.0.0"
+    "next": "^16.4.5"
   },
   "dependencies": {
     "@lit/react": "^1.0.8",
