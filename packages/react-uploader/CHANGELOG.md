@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.18.0...@uploadcare/react-uploader@1.19.0) (2026-11-25)
+
+### Bug Fixes
+
+- **deps:** bump @uploadcare/file-uploader from 1.36.1 to 1.37.0 ([#144](https://github.com/uploadcare/react-components/issues/144)) ([7fa38d8](https://github.com/uploadcare/react-components/commit/7fa38d89cb806901d7cd6dd1fa8434d96909d543))
+
 # [1.18.0](https://github.com/uploadcare/react-components/compare/@uploadcare/react-uploader@1.17.0...@uploadcare/react-uploader@1.18.0) (2026-11-12)
 
 ### Bug Fixes
